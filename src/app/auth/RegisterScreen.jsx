@@ -1,4 +1,3 @@
-// src/auth/RegisterScreen.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +22,7 @@ function RegisterScreen({ onRegister }) {
     }
 
     sessionStorage.setItem("easylearning_token", "dummy-jwt-token");
-    onRegister();
+    if (onRegister) onRegister();
     navigate("/home");
   };
 
@@ -31,32 +30,40 @@ function RegisterScreen({ onRegister }) {
     <div style={pageStyle}>
       <div style={cardStyle}>
         <h2 style={titleStyle}>Register</h2>
+        <p style={subTitleStyle}>Create your account ✨</p>
 
         <form onSubmit={handleRegister} style={formStyle}>
+          <label style={labelStyle}>Name</label>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             style={inputStyle}
           />
+
+          <label style={labelStyle}>Email</label>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={inputStyle}
           />
+
+          <label style={labelStyle}>Password</label>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Create password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={inputStyle}
           />
+
+          <label style={labelStyle}>Confirm Password</label>
           <input
             type="password"
-            placeholder="Confirm Password"
+            placeholder="Confirm password"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             style={inputStyle}
@@ -78,69 +85,89 @@ function RegisterScreen({ onRegister }) {
   );
 }
 
-/* ---------- STYLES ---------- */
-
+/* ✅ Same theme as other screens */
 const pageStyle = {
-  height: "100vh",
+  minHeight: "100vh",
+  padding: 16,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-
-  backgroundImage: "url('/bg.jpg')",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
+  backgroundColor: "#F8EFE6",
 };
 
 const cardStyle = {
   backgroundColor: "white",
-  width: "420px",
-  padding: "40px",
-  borderRadius: "18px",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-  textAlign: "center",
+  width: "100%",
+  maxWidth: 420,
+  padding: 22,
+  borderRadius: 18,
+  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
+  display: "flex",
+  flexDirection: "column",
+  gap: 12,
 };
 
 const titleStyle = {
-  marginBottom: "30px",
+  margin: 0,
+  textAlign: "center",
+  fontSize: 22,
+  fontWeight: 800,
+};
+
+const subTitleStyle = {
+  margin: 0,
+  textAlign: "center",
+  fontSize: 14,
+  color: "#555",
 };
 
 const formStyle = {
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
+  gap: 10,
+  marginTop: 6,
+};
+
+const labelStyle = {
+  fontSize: 13,
+  fontWeight: 700,
+  color: "#333",
 };
 
 const inputStyle = {
-  width: "85%",
-  padding: "14px",
-  marginBottom: "18px",
-  borderRadius: "10px",
-  border: "1px solid #ccc",
-  backgroundColor: "#f2f2f2",
-  fontSize: "15px",
+  width: "100%",
+  padding: 12,
+  borderRadius: 14,
+  border: "1px solid #ddd",
+  backgroundColor: "#f7f7f7",
+  fontSize: 14,
+  outline: "none",
 };
 
 const buttonStyle = {
-  width: "85%",
+  width: "100%",
   backgroundColor: "black",
   color: "white",
   border: "none",
-  padding: "14px",
-  borderRadius: "10px",
-  fontWeight: "600",
+  padding: 12,
+  borderRadius: 14,
+  fontWeight: 700,
   cursor: "pointer",
+  marginTop: 6,
 };
 
 const bottomText = {
-  marginTop: "22px",
-  fontSize: "15px",
+  marginTop: 6,
+  fontSize: 14,
+  textAlign: "center",
+  color: "#555",
 };
 
 const linkStyle = {
-  fontWeight: "600",
+  fontWeight: 800,
   cursor: "pointer",
-  marginLeft: "5px",
+  marginLeft: 5,
+  color: "black",
 };
 
 export default RegisterScreen;

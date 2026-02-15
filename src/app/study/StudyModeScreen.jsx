@@ -45,18 +45,19 @@ function StudyModeScreen() {
             <ul style={listStyle}>
               {currentNotes.map((note, index) => (
                 <li key={index} style={noteItem}>
-                  <b style={dotStyle}>•</b>
+                  <span style={dotStyle}>•</span>
                   <span>{note}</span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No study content found. Upload notes first.</p>
+            <p style={{ margin: 0 }}>No study content found. Upload notes first.</p>
           )}
         </div>
 
         <div style={row}>
           <button
+            type="button"
             style={{ ...btnNav, opacity: page === 1 ? 0.6 : 1 }}
             disabled={page === 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -65,6 +66,7 @@ function StudyModeScreen() {
           </button>
 
           <button
+            type="button"
             style={{ ...btnNav, opacity: page === totalPages ? 0.6 : 1 }}
             disabled={page === totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
@@ -74,6 +76,7 @@ function StudyModeScreen() {
         </div>
 
         <button
+          type="button"
           onClick={startTest}
           style={{ ...startBtn, opacity: notes.length === 0 ? 0.6 : 1 }}
           disabled={notes.length === 0}
@@ -85,40 +88,41 @@ function StudyModeScreen() {
   );
 }
 
-/* ✅ Background image (no beige) */
+/* ✅ Plain Background + Center */
 const pageStyle = {
-  padding: "16px",
   minHeight: "100vh",
+  backgroundColor: "#F8EFE6",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-
-  backgroundImage: "url('/bg.jpg')",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
+  padding: 16,
 };
 
-/* ✅ White card */
+/* ✅ Mobile-friendly Card */
 const cardStyle = {
   width: "100%",
-  maxWidth: "560px",
+  maxWidth: 420,
   backgroundColor: "white",
-  padding: "18px",
-  borderRadius: "16px",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+  padding: 20,
+  borderRadius: 18,
+  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
   display: "flex",
   flexDirection: "column",
-  gap: "14px",
+  gap: 14,
 };
 
-const titleStyle = { margin: 0, textAlign: "center" };
+const titleStyle = {
+  margin: 0,
+  textAlign: "center",
+  fontSize: 22,
+  fontWeight: 800,
+};
 
 const subTitleStyle = {
   margin: 0,
   textAlign: "center",
   color: "#555",
-  fontSize: "14px",
+  fontSize: 14,
 };
 
 const studyBox = {
@@ -134,36 +138,39 @@ const listStyle = { listStyle: "none", padding: 0, margin: 0 };
 
 const noteItem = {
   display: "flex",
-  gap: "8px",
-  marginBottom: "10px",
+  gap: 10,
+  marginBottom: 10,
   lineHeight: 1.5,
-  fontSize: "14px",
+  fontSize: 14,
 };
 
-const dotStyle = { fontSize: "18px", lineHeight: "18px" };
+const dotStyle = {
+  fontSize: 18,
+  lineHeight: "18px",
+  marginTop: 1,
+};
 
-const row = { display: "flex", gap: "10px" };
+const row = { display: "flex", gap: 10 };
 
-/* ✅ Black buttons */
 const btnNav = {
   flex: 1,
   backgroundColor: "black",
   color: "white",
   border: "none",
-  padding: "10px 16px",
-  borderRadius: "10px",
+  padding: "12px 16px",
+  borderRadius: 14,
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: 700,
 };
 
 const startBtn = {
   backgroundColor: "black",
   color: "white",
   border: "none",
-  padding: "10px 16px",
-  borderRadius: "10px",
+  padding: "12px 16px",
+  borderRadius: 14,
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: 700,
 };
 
 export default StudyModeScreen;

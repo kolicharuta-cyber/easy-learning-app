@@ -6,7 +6,7 @@ function TestModeScreen() {
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
 
-  // UI clean (your original - NO extra replacements)
+  // UI clean (same as your code)
   const uiClean = (s) =>
     String(s || "")
       .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -52,138 +52,138 @@ function TestModeScreen() {
     sessionStorage.setItem("mcqs", JSON.stringify(wrongOnly));
   };
 
-  // ✅ Outer shell with fixed background layer
   return (
-    <div style={shell}>
-      <div style={bgLayer} />
+    <div style={pageStyle}>
+      <div style={cardStyle}>
+        {mcqs.length === 0 ? (
+          <>
+            <h2 style={titleStyle}>Test Mode</h2>
+            <p style={{ margin: 0, textAlign: "center", color: "#555" }}>
+              No MCQs found. Upload notes first.
+            </p>
+          </>
+        ) : (
+          <>
+            <h2 style={titleStyle}>Test Mode</h2>
 
-      {mcqs.length === 0 ? (
-        <div style={centerCard}>
-          <h2 style={{ marginTop: 0 }}>Test Mode</h2>
-          <p>No MCQs found. Upload notes first.</p>
-        </div>
-      ) : (
-        <div style={mainCard}>
-          <h2 style={{ marginTop: 0, textAlign: "center" }}>Test Mode</h2>
+            <div style={scrollArea}>
+              {mcqs.map((q, qi) => (
+                <div key={qi} style={questionBox}>
+                  <div style={questionText}>
+                    <b>Q{qi + 1}:</b> {uiClean(q.question)}
+                  </div>
 
-          {mcqs.map((q, qi) => (
-            <div key={qi} style={questionBox}>
-              <div style={questionText}>
-                <b>Q{qi + 1}:</b> {uiClean(q.question)}
-              </div>
+                  {q.options.map((opt, oi) => (
+                    <label key={oi} style={optionStyle}>
+                      <input
+                        type="radio"
+                        name={`q-${qi}`}
+                        checked={answers[qi] === oi}
+                        onChange={() => handleSelect(qi, oi)}
+                        style={{ marginTop: 3 }}
+                      />
+                      <span style={optionText}>{uiClean(opt)}</span>
+                    </label>
+                  ))}
 
-              {q.options.map((opt, oi) => (
-                <label key={oi} style={optionStyle}>
-                  <input
-                    type="radio"
-                    name={`q-${qi}`}
-                    checked={answers[qi] === oi}
-                    onChange={() => handleSelect(qi, oi)}
-                    style={{ marginTop: 3 }}
-                  />
-                  <span style={optionText}>{uiClean(opt)}</span>
-                </label>
-              ))}
-
-              {result && (
-                <div style={explanationStyle}>
-                  <b>Explanation:</b> {uiClean(q.explanation)}
+                  {result && (
+                    <div style={explanationStyle}>
+                      <b>Explanation:</b> {uiClean(q.explanation)}
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
-          ))}
 
-          {!result && (
-            <button onClick={handleSubmit} style={submitBtn}>
-              Submit Test
-            </button>
-          )}
+            {!result && (
+              <button type="button" onClick={handleSubmit} style={btnBlack}>
+                Submit Test
+              </button>
+            )}
 
-          {result && (
-            <div style={resultBox}>
-              <h3 style={{ margin: 0 }}>
-                Score: {result.score} / {result.total}
-              </h3>
+            {result && (
+              <div style={resultBox}>
+                <h3 style={{ margin: 0, textAlign: "center" }}>
+                  Score: {result.score} / {result.total}
+                </h3>
 
-              {result.fullMarks ? (
-                <p style={{ color: "green", marginTop: 8 }}>
-                  🎉 Perfect! You’ve mastered this topic.
-                </p>
-              ) : (
-                <>
-                  <p style={{ marginTop: 8 }}>
-                    Review incorrect questions and retry.
+                {result.fullMarks ? (
+                  <p style={{ color: "green", marginTop: 10, textAlign: "center" }}>
+                    🎉 Perfect! You’ve mastered this topic.
                   </p>
-                  <button onClick={retryWrong} style={retryBtn}>
-                    Retry Wrong Questions
-                  </button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+                ) : (
+                  <>
+                    <p style={{ marginTop: 10, textAlign: "center", color: "#555" }}>
+                      Review incorrect questions and retry.
+                    </p>
+                    <button type="button" onClick={retryWrong} style={btnBlack}>
+                      Retry Wrong Questions
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
-/* ✅ This wrapper sits inside your layout but covers full screen */
-const shell = {
-  position: "relative",
+/* ✅ Plain Background + Center */
+const pageStyle = {
   minHeight: "100vh",
-  padding: "16px",
+  backgroundColor: "#F8EFE6",
   display: "flex",
   justifyContent: "center",
-  alignItems: "flex-start",
+  alignItems: "center",
+  padding: 16,
 };
 
-/* ✅ Guaranteed background image (ignores parent beige) */
-const bgLayer = {
-  position: "fixed",
-  inset: 0,
-  background: `url("/bg.jpg") center / cover no-repeat`,
-  zIndex: -1,
-};
-
-const mainCard = {
+/* ✅ Mobile-friendly Card */
+const cardStyle = {
   width: "100%",
-  maxWidth: "560px",
+  maxWidth: 420,
   backgroundColor: "white",
-  padding: "18px",
-  borderRadius: "16px",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-  marginTop: "20px",
+  padding: 20,
+  borderRadius: 18,
+  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
+  display: "flex",
+  flexDirection: "column",
+  gap: 14,
 };
 
-const centerCard = {
-  width: "100%",
-  maxWidth: "560px",
-  marginTop: "18px",
-  backgroundColor: "white",
-  padding: "22px",
-  borderRadius: "16px",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+const titleStyle = {
+  margin: 0,
   textAlign: "center",
+  fontSize: 22,
+  fontWeight: 800,
+};
+
+/* ✅ Keep questions scrollable on mobile */
+const scrollArea = {
+  maxHeight: "62vh",
+  overflowY: "auto",
+  paddingRight: 4,
 };
 
 const questionBox = {
   border: "1px solid #ddd",
-  padding: "14px",
-  borderRadius: "12px",
-  marginBottom: "14px",
+  padding: 14,
+  borderRadius: 12,
+  marginBottom: 14,
   backgroundColor: "#ffffff",
 };
 
 const questionText = {
   lineHeight: 1.7,
-  fontSize: "15px",
+  fontSize: 15,
   wordBreak: "break-word",
-  whiteSpace: "normal",
 };
 
 const optionStyle = {
   display: "flex",
-  gap: "10px",
+  gap: 10,
   alignItems: "flex-start",
   margin: "10px 0",
   cursor: "pointer",
@@ -192,51 +192,38 @@ const optionStyle = {
 const optionText = {
   flex: 1,
   lineHeight: 1.7,
-  fontSize: "15px",
+  fontSize: 15,
   wordBreak: "break-word",
-  whiteSpace: "normal",
 };
 
 const explanationStyle = {
-  marginTop: "10px",
-  padding: "10px",
-  borderRadius: "10px",
+  marginTop: 10,
+  padding: 10,
+  borderRadius: 10,
   backgroundColor: "#f5f5f5",
   border: "1px solid #ddd",
-  fontSize: "14px",
+  fontSize: 14,
   color: "#444",
   lineHeight: 1.6,
   wordBreak: "break-word",
 };
 
-const submitBtn = {
+const btnBlack = {
   width: "100%",
   backgroundColor: "black",
   color: "white",
   border: "none",
   padding: "12px 18px",
-  borderRadius: "10px",
+  borderRadius: 14,
   cursor: "pointer",
-  fontWeight: "bold",
+  fontWeight: 700,
 };
 
 const resultBox = {
-  marginTop: "16px",
-  padding: "14px",
-  borderRadius: "12px",
+  padding: 14,
+  borderRadius: 12,
   backgroundColor: "#ffffff",
   border: "1px solid #ddd",
-};
-
-const retryBtn = {
-  width: "100%",
-  backgroundColor: "black",
-  color: "white",
-  border: "none",
-  padding: "12px 18px",
-  borderRadius: "10px",
-  cursor: "pointer",
-  fontWeight: "bold",
 };
 
 export default TestModeScreen;
